@@ -20,33 +20,15 @@ html, body {
     background: white;
 }
 
+/* Лаконичная шапка */
 .chat-header {
     padding: 15px 20px;
-    background: #075e54;
+    background: #075e54; 
     color: white;
     font-weight: bold;
     font-size: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     z-index: 10;
-}
-
-#clear-btn {
-    background: #e53935;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    font-size: 13px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: background 0.2s;
-}
-
-#clear-btn:hover {
-    background: #b71c1c;
 }
 
 .messages-box {
@@ -64,7 +46,7 @@ html, body {
     background: white;
     border-radius: 8px;
     border-top-left-radius: 0; 
-    max-width: 70%;
+    max-width: 70%; 
     width: fit-content;
     align-self: flex-start;
     box-shadow: 0 1px 2px rgba(0,0,0,0.15);
@@ -77,10 +59,18 @@ html, body {
     display: flex;
     padding: 15px 20px;
     background: #f0f0f0;
-    gap: 15px;
+    gap: 12px;
     align-items: center;
     border-top: 1px solid #e0e0e0;
     padding-bottom: calc(15px + env(safe-area-inset-bottom, 0px));
+}
+
+#clear-btn:hover {
+    background: #d5c8c8;
+}
+
+#clear-btn:active {
+    transform: scale(0.95);
 }
 
 .input-area input {
@@ -91,14 +81,16 @@ html, body {
     outline: none;
     font-size: 15px;
     background: white;
+    height: 45px;
 }
 
 .input-area input:focus {
     border-color: #075e54;
 }
 
-#send-btn {
-    padding: 13px 25px;
+#send-btn, #clear-btn {
+    height: 45px;
+    padding: 0 25px;
     background: #075e54;
     color: white;
     border: none;
@@ -107,6 +99,7 @@ html, body {
     font-weight: bold;
     font-size: 15px;
     transition: background 0.2s;
+    flex-shrink: 0;
 }
 
 #send-btn:hover {
