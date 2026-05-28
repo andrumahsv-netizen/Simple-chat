@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">Chat</div>
+        <div class="messages-box" id="messages-box"></div>
+        <div class="input-area">
+            <input type="text" id="message-input" placeholder="Write a message...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <div class="chat-header">
+        <span>Chat</span>
+            <button id="clear-btn" style="background: #ff4d4d; padding: 5px 10px; font-size: 12px; margin-left: 10px;">Clear All</button>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
+    <script src="app.js"></script>
+    
+</body>
+</html>
