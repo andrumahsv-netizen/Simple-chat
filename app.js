@@ -59,7 +59,6 @@ clearBtn.addEventListener('click', async () => {
             const promises = snapshot.docs.map(doc => doc.ref.delete());
             await Promise.all(promises);
             
-            alert("Chat history successfully cleared");
         } catch (e) {
             console.error("Error:", e);
             alert("Cannot clear chat history");
