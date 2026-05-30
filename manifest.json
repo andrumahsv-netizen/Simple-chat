@@ -1,0 +1,21 @@
+{
+  "short_name": "Chat",
+  "name": "Simple Chat Application",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#120716",
+  "theme_color": "#ff61ea",
+  "display": "standalone",
+  "orientation": "portrait"
+}
