@@ -1,20 +1,15 @@
-/* ==========================================================================
-   1. СБРОС СТИЛЕЙ И БАЗОВЫЕ НАСТРОЙКИ (УЛУЧШЕНО ДЛЯ ТАЧ-ЭКРАНОВ)
-   ========================================================================== */
 * { 
     box-sizing: border-box; 
     margin: 0; 
     padding: 0; 
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
     
-    /* Убираем выделение интерфейса и задержки тапа на Android */
     -webkit-user-select: none;
     user-select: none;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
 } 
 
-/* Разрешаем выделять текст только внутри самих сообщений */
 .msg {
     -webkit-user-select: text;
     user-select: text;
@@ -29,16 +24,12 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Железобетонный фикс высоты под мобильный Chrome/Yandex */
     height: 100vh;
     height: -webkit-fill-available; 
     margin: 0;
     overflow: hidden; 
 } 
 
-/* ==========================================================================
-   2. КОНТЕЙНЕРЫ ОКОН (ВХОД И АДАПТИВНЫЙ ЧАТ)
-   ========================================================================== */
 #auth-container { 
     width: 100%;
     max-width: 400px; 
@@ -90,12 +81,9 @@ html, body {
     font-weight: 600;
 }
 
-/* ==========================================================================
-   3. ШАПКА ПРИЛОЖЕНИЯ
-   ========================================================================== */
 .chat-header { 
     padding: 12px 16px; 
-    padding-top: calc(12px + env(safe-area-inset-top, 0px)); /* Безопасная зона под челку телефона */
+    padding-top: calc(12px + env(safe-area-inset-top, 0px));
     background: #0e0817; 
     color: white; 
     border-bottom: 1px solid rgba(255, 158, 210, 0.15); 
@@ -154,9 +142,6 @@ html, body {
     font-size: 16px;
 }
 
-/* ==========================================================================
-   4. ЗОНА СООБЩЕНИЙ
-   ========================================================================== */
 .messages-box { 
     flex: 1; 
     padding: 24px; 
@@ -186,9 +171,6 @@ html, body {
     border: 1px solid rgba(255, 97, 234, 0.25) !important;
 }
 
-/* ==========================================================================
-   5. НИЖНЯЯ ПАНЕЛЬ И ИНПУТЫ (ЗАЩИТА ОТ АВТО-ЗУМА)
-   ========================================================================== */
 .input-area { 
     display: flex; 
     padding: 14px 16px; 
@@ -205,7 +187,7 @@ input[type="text"], input[type="email"], input[type="password"] {
     padding: 12px 20px; 
     border-radius: 24px; 
     outline: none; 
-    font-size: 16px; /* КРИТИЧНО ДЛЯ ANDROID: ровно 16px, чтобы экран не прыгал */
+    font-size: 16px;
     height: 48px; 
     background: #0b0813 !important;
     border: 1px solid rgba(255, 158, 210, 0.2) !important; 
@@ -220,15 +202,12 @@ input:focus {
     box-shadow: 0 0 10px rgba(255, 97, 234, 0.15); 
 } 
 
-/* ==========================================================================
-   6. ЕДИНАЯ СИСТЕМА КНОПОК (КРУПНЫЕ И ЧИТАЕМЫЕ)
-   ========================================================================== */
 .header-btn, #send-btn, #clear-btn, .modal-buttons button {
-    height: 48px;             /* Исправлено: честные, солидные 48px в высоту */
-    width: auto;              /* Исправлено: убрали жесткие 120px, чтобы не сжимать текст */
+    height: 48px;
+    width: auto;
     padding: 0 28px;          
     border-radius: 24px;      
-    font-size: 16px;          /* Исправлено: крупный читаемый текст */
+    font-size: 16px;
     font-weight: 700;          
     letter-spacing: 0.3px;    
     white-space: nowrap;      
@@ -246,7 +225,6 @@ input:focus {
     transform: scale(0.95);
 }
 
-/* 6.2 ГЛАВНЫЕ КНОПКИ */
 .btn-primary, #send-btn {
     background: #ff61ea !important;
     color: #11071a !important;
@@ -258,7 +236,6 @@ input:focus {
     box-shadow: 0 4px 20px rgba(255, 97, 234, 0.4); 
 }
 
-/* 6.3 ВТОРОСТЕПЕННЫЕ / ДЕСТРУКТИВНЫЕ КНОПКИ */
 .btn-secondary, #clear-btn {
     background: transparent !important;
     border: 2px solid rgba(255, 158, 210, 0.5) !important; 
@@ -271,7 +248,6 @@ input:focus {
     background: rgba(255, 97, 234, 0.05) !important;
 }
 
-/* 6.4 Кнопка удаления внутри сообщения */
 .delete-msg-btn {
     background: none !important;
     border: none !important;
@@ -294,9 +270,6 @@ input:focus {
     text-shadow: 0 0 5px #ff61ea;
 }
 
-/* ==========================================================================
-   7. СИСТЕМНЫЕ ЭЛЕМЕНТЫ & МОДАЛКИ
-   ========================================================================== */
 ::-webkit-scrollbar { 
     width: 4px; 
 } 
@@ -340,7 +313,6 @@ input:focus {
     margin-bottom: 24px;
 }
 
-/* Внутри модалок делаем кнопки чуть компактнее, чтобы вставали в ряд */
 .modal-buttons {
     display: flex;
     gap: 12px;
@@ -352,9 +324,6 @@ input:focus {
     font-size: 14px;
 }
 
-/* ==========================================================================
-   8. ОСОБАЯ АДАПТИВНОСТЬ: ДЕСКТОП VS АНДРОИД
-   ========================================================================== */
 .room-actions-desktop {
     display: flex;
     gap: 12px;
@@ -377,7 +346,7 @@ input:focus {
     }
 
     #user-display-name {
-        display: none; /* Прячем имя на мобилках ради экономии места */
+        display: none;
     }
 
     .chat-header {
@@ -414,13 +383,10 @@ input:focus {
     }
 }
 
-/* ==========================================================================
-   9. ВЫДВИЖНАЯ ШТОРКА (SIDEBAR) & УПРАВЛЕНИЕ ЧАТАМИ
-   ========================================================================== */
 .sidebar {
     position: fixed;
     top: 0;
-    left: -300px; /* Изначально спрятана слева */
+    left: -300px;
     width: 300px;
     height: 100%;
     background: #0e0817;
@@ -434,7 +400,6 @@ input:focus {
     padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Класс активации шторки */
 .sidebar.open {
     left: 0;
 }
@@ -500,7 +465,6 @@ input:focus {
     border-top: 1px solid rgba(255, 158, 210, 0.1);
 }
 
-/* Иконки и кнопки внутри меню */
 .icon-btn {
     background: none;
     border: none;
@@ -536,7 +500,6 @@ input:focus {
     background: rgba(255, 97, 234, 0.08);
 }
 
-/* ПАНЕЛЬ УПРАВЛЕНИЯ ЧАТАМИ */
 .manager-content {
     max-width: 450px !important;
     width: 95%;
