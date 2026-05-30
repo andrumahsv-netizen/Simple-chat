@@ -401,14 +401,21 @@ roomSelect.addEventListener('change', (e) => {
     toggleSidebar(false); 
 }); 
 
-document.getElementById('add-room-btn').addEventListener('click', actionCreateRoom); 
-addMemberBtn.addEventListener('click', actionAddMemberToChat); 
+document.getElementById('add-room-btn').addEventListener('click', () => {
+    toggleSidebar(false);
+    actionCreateRoom();
+}); 
+
+addMemberBtn.addEventListener('click', () => {
+    toggleSidebar(false);
+    actionAddMemberToChat();
+}); 
 
 openManagerBtn.addEventListener('click', () => { 
-    toggleSidebar(false); 
+    toggleSidebar(false);
     chatsManagerModal.style.display = 'flex'; 
     renderManagerList(); 
-}); 
+});
 
 closeManagerBtn.addEventListener('click', () => { 
     chatsManagerModal.style.display = 'none'; 
