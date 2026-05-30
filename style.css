@@ -345,10 +345,6 @@ input:focus {
         background: #1f1230;
     }
 
-    #user-display-name {
-        display: none;
-    }
-
     .chat-header {
         padding: 10px 12px;
     }
