@@ -1,107 +1,662 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+/* ==========================================================================
+   1. СБРОС СТИЛЕЙ И БАЗОВЫЕ НАСТРОЙКИ (УЛУЧШЕНО ДЛЯ ТАЧ-ЭКРАНОВ)
+   ========================================================================== */
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+    
+    /* Убираем выделение интерфейса и задержки тапа на Android */
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+} 
+
+/* Разрешаем выделять текст только внутри самих сообщений */
+.msg {
+    -webkit-user-select: text;
+    user-select: text;
 }
 
-html, body {
-    height: 100%;
+html, body { 
+    height: 100%; 
+    width: 100%; 
+    background-color: #0b0813; 
+    background-image: radial-gradient(circle at 50% 50%, #140b1a 0%, #0b0813 100%); 
+    color: #ffdbe8; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Железобетонный фикс высоты под мобильный Chrome/Yandex */
+    height: 100vh;
+    height: -webkit-fill-available; 
+    margin: 0;
+    overflow: hidden; 
+} 
+
+/* ==========================================================================
+   2. КОНТЕЙНЕРЫ ОКОН (ВХОД И АДАПТИВНЫЙ ЧАТ)
+   ========================================================================== */
+#auth-container { 
     width: 100%;
-    background: #efeae2; 
-    overflow: hidden;
-}
+    max-width: 400px; 
+    height: auto;
+    max-height: 550px;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center;
+    background: rgba(19, 12, 26, 0.95) !important;
+    border: 1px solid rgba(255, 158, 210, 0.3) !important; 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important; 
+    border-radius: 20px !important; 
+    padding: 45px 35px;
+    gap: 20px; 
+} 
 
 .chat-container {
     width: 100%;
     height: 100%;
+    height: -webkit-fill-available;
     display: flex;
     flex-direction: column;
-    background: white;
+    background: #0b0813 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Лаконичная шапка */
-.chat-header {
-    padding: 15px 20px;
-    background: #075e54; 
-    color: white;
-    font-weight: bold;
+#auth-container h2 {
+    text-align: center;
+    color: #ff61ea; 
+    font-size: 24px;
+    letter-spacing: -0.5px;
+    margin-bottom: 5px;
+}
+
+#auth-container p {
+    text-align: center;
+    font-size: 14px;
+    opacity: 0.6; 
+    color: #ffdbe8;
+}
+
+#auth-container a {
+    color: #ff61ea;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   3. ШАПКА ПРИЛОЖЕНИЯ
+   ========================================================================== */
+.chat-header { 
+    padding: 12px 16px; 
+    padding-top: calc(12px + env(safe-area-inset-top, 0px)); /* Безопасная зона под челку телефона */
+    background: #0e0817; 
+    color: white; 
+    border-bottom: 1px solid rgba(255, 158, 210, 0.15); 
+    z-index: 10; 
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    flex-shrink: 0;
+} 
+
+.header-left, .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px; 
+}
+
+#user-display-name {
+    color: #fffadb; 
+    font-weight: 600; 
+    font-size: 15px;
+}
+
+.room-select-wrapper {
+    position: relative;
+    background: #170e24;
+    border: 1px solid rgba(255, 158, 210, 0.25); 
+    border-radius: 20px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    min-width: 160px; 
+    max-width: 250px; 
+    transition: all 0.2s ease;
+}
+
+.room-select-wrapper:hover {
+    border-color: rgba(255, 97, 234, 0.7);
+}
+
+#room-select { 
+    background: transparent; 
+    color: #ff61ea; 
+    border: none; 
+    font-size: 14px; 
+    font-weight: bold; 
+    outline: none; 
+    cursor: pointer; 
+    width: 100%; 
+} 
+
+#room-select option { 
+    background: #170e22; 
+    color: #ffdbe8; 
+    padding: 14px;
     font-size: 16px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    z-index: 10;
 }
 
-.messages-box {
+/* ==========================================================================
+   4. ЗОНА СООБЩЕНИЙ
+   ========================================================================== */
+.messages-box { 
+    flex: 1; 
+    padding: 24px; 
+    overflow-y: auto; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 12px; 
+    background: #0b0813; 
+} 
+
+.msg { 
+    max-width: 65%;
+    padding: 12px 16px; 
+    border-radius: 16px;
+    background: #140d1f; 
+    border: 1px solid rgba(255, 158, 210, 0.1); 
+    width: fit-content; 
+    align-self: flex-start; 
+    font-size: 15px; 
+    line-height: 1.5; 
+    color: #fffadb; 
+    word-break: break-word; 
+} 
+
+.msg[style*="flex-end"] {
+    background: #20122b !important;
+    border: 1px solid rgba(255, 97, 234, 0.25) !important;
+}
+
+/* ==========================================================================
+   5. НИЖНЯЯ ПАНЕЛЬ И ИНПУТЫ (ЗАЩИТА ОТ АВТО-ЗУМА)
+   ========================================================================== */
+.input-area { 
+    display: flex; 
+    padding: 14px 16px; 
+    background: #0e0817; 
+    gap: 12px; 
+    align-items: center; 
+    border-top: 1px solid rgba(255, 158, 210, 0.15); 
+    flex-shrink: 0;
+    padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); 
+} 
+
+input[type="text"], input[type="email"], input[type="password"] { 
+    flex: 1; 
+    padding: 12px 20px; 
+    border-radius: 24px; 
+    outline: none; 
+    font-size: 16px; /* КРИТИЧНО ДЛЯ ANDROID: ровно 16px, чтобы экран не прыгал */
+    height: 48px; 
+    background: #0b0813 !important;
+    border: 1px solid rgba(255, 158, 210, 0.2) !important; 
+    color: #fffadb !important; 
+    transition: all 0.2s ease;
+    -webkit-appearance: none;
+    appearance: none;
+} 
+
+input:focus { 
+    border-color: #ff61ea !important;
+    box-shadow: 0 0 10px rgba(255, 97, 234, 0.15); 
+} 
+
+/* ==========================================================================
+   6. ЕДИНАЯ СИСТЕМА КНОПОК (КРУПНЫЕ И ЧИТАЕМЫЕ)
+   ========================================================================== */
+.header-btn, #send-btn, #clear-btn, .modal-buttons button {
+    height: 48px;             /* Исправлено: честные, солидные 48px в высоту */
+    width: auto;              /* Исправлено: убрали жесткие 120px, чтобы не сжимать текст */
+    padding: 0 28px;          
+    border-radius: 24px;      
+    font-size: 16px;          /* Исправлено: крупный читаемый текст */
+    font-weight: 700;          
+    letter-spacing: 0.3px;    
+    white-space: nowrap;      
+    cursor: pointer;
+    border: none;
+    outline: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;           
+}
+
+.header-btn:active, #send-btn:active, #clear-btn:active, .modal-buttons button:active {
+    transform: scale(0.95);
+}
+
+/* 6.2 ГЛАВНЫЕ КНОПКИ */
+.btn-primary, #send-btn {
+    background: #ff61ea !important;
+    color: #11071a !important;
+}
+
+.btn-primary:hover, #send-btn:hover {
+    background: #fffadb !important;
+    color: #11071a !important;
+    box-shadow: 0 4px 20px rgba(255, 97, 234, 0.4); 
+}
+
+/* 6.3 ВТОРОСТЕПЕННЫЕ / ДЕСТРУКТИВНЫЕ КНОПКИ */
+.btn-secondary, #clear-btn {
+    background: transparent !important;
+    border: 2px solid rgba(255, 158, 210, 0.5) !important; 
+    color: #ff9ed2 !important;
+}
+
+.btn-secondary:hover, #clear-btn:hover {
+    border-color: #ff61ea !important;
+    color: #ff61ea !important;
+    background: rgba(255, 97, 234, 0.05) !important;
+}
+
+/* 6.4 Кнопка удаления внутри сообщения */
+.delete-msg-btn {
+    background: none !important;
+    border: none !important;
+    color: rgba(255, 158, 210, 0.4) !important;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 5px;
+    opacity: 0;
+    transition: all 0.2s ease;
+    height: auto !important;
+    width: auto !important;
+}
+
+.msg:hover .delete-msg-btn {
+    opacity: 1;
+}
+
+.delete-msg-btn:hover {
+    color: #ff61ea !important;
+    text-shadow: 0 0 5px #ff61ea;
+}
+
+/* ==========================================================================
+   7. СИСТЕМНЫЕ ЭЛЕМЕНТЫ & МОДАЛКИ
+   ========================================================================== */
+::-webkit-scrollbar { 
+    width: 4px; 
+} 
+::-webkit-scrollbar-track { 
+    background: transparent; 
+} 
+::-webkit-scrollbar-thumb { 
+    background: rgba(255, 158, 210, 0.15); 
+    border-radius: 2px; 
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(7, 4, 10, 0.8);
+    backdrop-filter: blur(6px); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal-content {
+    background: #130c1c;
+    border: 1px solid rgba(255, 158, 210, 0.3);
+    box-shadow: 0 15px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 320px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal-content p {
+    color: #fffadb;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 24px;
+}
+
+/* Внутри модалок делаем кнопки чуть компактнее, чтобы вставали в ряд */
+.modal-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+.modal-buttons button {
+    height: 40px;
+    padding: 0 20px;
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   8. ОСОБАЯ АДАПТИВНОСТЬ: ДЕСКТОП VS АНДРОИД
+   ========================================================================== */
+.room-actions-desktop {
+    display: flex;
+    gap: 12px;
+}
+
+#room-select option[value^="_action_"] {
+    display: none; 
+}
+
+@media (max-width: 768px) {
+    .room-actions-desktop {
+        display: none !important;
+    }
+    
+    #room-select option[value^="_action_"] {
+        display: block !important;
+        color: #ff61ea;
+        font-weight: bold;
+        background: #1f1230;
+    }
+
+    #user-display-name {
+        display: none; /* Прячем имя на мобилках ради экономии места */
+    }
+
+    .chat-header {
+        padding: 10px 12px;
+    }
+}
+
+@media (max-width: 380px) {
+    .input-area {
+        padding: 10px 12px;
+        gap: 8px;
+    }
+
+    #send-btn {
+        padding: 0 16px;
+        font-size: 14px; 
+    }
+    
+    .chat-header {
+        padding: 10px 10px;
+    }
+    
+    .room-title {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 340px) {
+    #auth-container {
+        padding: 25px 15px;
+        border-radius: 0 !important;
+        border: none !important;
+        height: 100%;
+    }
+}
+
+/* ==========================================================================
+   9. ВЫДВИЖНАЯ ШТОРКА (SIDEBAR) & УПРАВЛЕНИЕ ЧАТАМИ
+   ========================================================================== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -300px; /* Изначально спрятана слева */
+    width: 300px;
+    height: 100%;
+    background: #0e0817;
+    border-right: 1px solid rgba(255, 158, 210, 0.2);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    transition: left 0.3s cubic-bezier(0.1, 0.9, 0.2, 1);
+    box-shadow: 5px 0 30px rgba(0,0,0,0.5);
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Класс активации шторки */
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 9999;
+    display: none;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 158, 210, 0.1);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar {
+    font-size: 20px;
+    background: rgba(255, 97, 234, 0.1);
+    padding: 5px 8px;
+    border-radius: 50%;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #ff9ed2;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.sidebar-content {
     flex: 1;
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.sidebar-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 158, 210, 0.6);
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 158, 210, 0.1);
+}
+
+/* Иконки и кнопки внутри меню */
+.icon-btn {
+    background: none;
+    border: none;
+    color: #ff61ea;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.room-title {
+    font-size: 18px;
+    color: #fffadb;
+    font-weight: 700;
+}
+
+.sidebar-menu-btn {
+    background: rgba(255, 158, 210, 0.05);
+    border: 1px dashed rgba(255, 158, 210, 0.3);
+    color: #ffdbe8;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu-btn:hover {
+    border-color: #ff61ea;
+    color: #ff61ea;
+    background: rgba(255, 97, 234, 0.08);
+}
+
+/* ПАНЕЛЬ УПРАВЛЕНИЯ ЧАТАМИ */
+.manager-content {
+    max-width: 450px !important;
+    width: 95%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.manager-subtitle {
+    font-size: 13px !important;
+    margin-bottom: 15px !important;
+}
+
+.manager-list {
+    flex: 1;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    background: #efeae2; 
+    padding-right: 5px;
+    max-height: 40vh;
 }
 
-.msg {
-    padding: 12px 16px;
-    background: white;
-    border-radius: 8px;
-    border-top-left-radius: 0; 
-    max-width: 70%; 
-    width: fit-content;
-    align-self: flex-start;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-    font-size: 15px;
-    line-height: 1.5;
-    word-break: break-word; 
-}
-
-.input-area {
+.manager-item {
     display: flex;
-    padding: 15px 20px;
-    background: #f0f0f0;
-    gap: 12px;
+    justify-content: space-between;
     align-items: center;
-    border-top: 1px solid #e0e0e0;
-    padding-bottom: calc(15px + env(safe-area-inset-bottom, 0px));
+    padding: 10px 14px;
+    background: #1c1228;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 158, 210, 0.1);
 }
 
-#clear-btn:hover {
-    background: #d5c8c8;
-}
-
-#clear-btn:active {
-    transform: scale(0.95);
-}
-
-.input-area input {
-    flex: 1;
-    padding: 14px 20px;
-    border: 1px solid #ccc;
-    border-radius: 25px; 
-    outline: none;
+.manager-room-name {
+    font-weight: 600;
+    color: #fffadb;
     font-size: 15px;
-    background: white;
-    height: 45px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-transform: grayscale;
+    text-overflow: ellipsis;
+    max-width: 200px;
 }
 
-.input-area input:focus {
-    border-color: #075e54;
+.manager-actions {
+    display: flex;
+    gap: 8px;
 }
 
-#send-btn, #clear-btn {
-    height: 45px;
-    padding: 0 25px;
-    background: #075e54;
-    color: white;
-    border: none;
-    border-radius: 25px;
+.action-icon-btn {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 6px 10px;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 15px;
-    transition: background 0.2s;
-    flex-shrink: 0;
+    font-size: 14px;
+    transition: all 0.2s;
 }
 
-#send-btn:hover {
-    background: #128c7e;
+.action-icon-btn:hover {
+    transform: scale(1.05);
+}
+.action-icon-btn.clear:hover { background: rgba(255, 165, 0, 0.2); border-color: orange; }
+.action-icon-btn.delete:hover { background: rgba(255, 0, 0, 0.2); border-color: red; }
+
+#custom-prompt .modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+    max-width: 350px;
+}
+
+#prompt-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: #1f1224;
+    border: 2px solid #ff61ea;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 97, 234, 0.2);
+}
+
+#prompt-input:focus {
+    border-color: #ffdbe8;
+    box-shadow: 0 0 15px rgba(255, 97, 234, 0.6);
+}
+
+#custom-prompt .modal-buttons {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+#custom-prompt .modal-buttons button {
+    flex: 1;
+    padding: 10px;
+    font-size: 14px;
+}
+
+#prompt-friend-email, #prompt-room-name {
+    width: 100%;
+    padding: 12px 16px;
+    background: #1f1224;
+    border: 2px solid #ff61ea;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 16px;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 97, 234, 0.2);
+}
+
+#prompt-friend-email:focus, #prompt-room-name:focus {
+    border-color: #ffdbe8;
+    box-shadow: 0 0 15px rgba(255, 97, 234, 0.6);
 }
